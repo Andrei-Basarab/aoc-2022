@@ -46,6 +46,15 @@ enum RockPaperScissorResult {
 }
 
 impl RockPaperScissorResult {
+    fn from_char(value: char) -> RockPaperScissorResult {
+        match value {
+            'X' => RockPaperScissorResult::Loss,
+            'Y' => RockPaperScissorResult::Draw,
+            'Z' => RockPaperScissorResult::Win,
+            _ => panic!("Unknown value: {}", value),
+        }
+    }
+
     fn to_score(value: RockPaperScissorResult) -> u32 {
         match value {
             RockPaperScissorResult::Loss => 0,
@@ -67,9 +76,8 @@ fn line_to_char_set(line: &str) -> (char, char) {
 fn get_rock_paper_scissor_score(opponent: RockPaperScissor, me: RockPaperScissor) -> u32 {
     let selection_score = RockPaperScissor::to_score(me);
     let round_score = RockPaperScissorResult::to_score(rock_paper_scissor(opponent, me));
-    let total_score = selection_score + round_score;
 
-    total_score
+    selection_score + round_score
 }
 
 fn rock_paper_scissor(opponent: RockPaperScissor, me: RockPaperScissor) -> RockPaperScissorResult {
@@ -86,6 +94,23 @@ fn rock_paper_scissor(opponent: RockPaperScissor, me: RockPaperScissor) -> RockP
     }
 }
 
+fn reverse_rock_paper_scissor(
+    opponent: RockPaperScissor,
+    my_result: RockPaperScissorResult,
+) -> RockPaperScissor {
+    match (opponent, my_result) {
+        (RockPaperScissor::Rock, RockPaperScissorResult::Loss) => RockPaperScissor::Scissor,
+        (RockPaperScissor::Rock, RockPaperScissorResult::Draw) => RockPaperScissor::Rock,
+        (RockPaperScissor::Rock, RockPaperScissorResult::Win) => RockPaperScissor::Paper,
+        (RockPaperScissor::Paper, RockPaperScissorResult::Loss) => RockPaperScissor::Rock,
+        (RockPaperScissor::Paper, RockPaperScissorResult::Draw) => RockPaperScissor::Paper,
+        (RockPaperScissor::Paper, RockPaperScissorResult::Win) => RockPaperScissor::Scissor,
+        (RockPaperScissor::Scissor, RockPaperScissorResult::Loss) => RockPaperScissor::Paper,
+        (RockPaperScissor::Scissor, RockPaperScissorResult::Draw) => RockPaperScissor::Scissor,
+        (RockPaperScissor::Scissor, RockPaperScissorResult::Win) => RockPaperScissor::Rock,
+    }
+}
+
 fn main() {
     let file_path = "./input/input.txt";
 
@@ -95,16 +120,26 @@ fn main() {
         fs::read_to_string(file_path).expect("Should have been able to read the file");
 
     let split_lines = file_content.lines();
-    let mut total_score = 0;
+    let mut total_score_1 = 0;
+    let mut total_score_2 = 0;
 
     for line in split_lines {
         let char_set = line_to_char_set(line);
 
-        total_score += get_rock_paper_scissor_score(
+        total_score_1 += get_rock_paper_scissor_score(
             RockPaperScissor::from_char(char_set.0),
             RockPaperScissor::from_char(char_set.1),
         );
+
+        total_score_2 += get_rock_paper_scissor_score(
+            RockPaperScissor::from_char(char_set.0),
+            reverse_rock_paper_scissor(
+                RockPaperScissor::from_char(char_set.0),
+                RockPaperScissorResult::from_char(char_set.1),
+            ),
+        );
     }
 
-    println!("What would your total score be if everything goes exactly according to your strategy guide? Answer: [{}]", total_score);
+    println!("What would your total score be if everything goes exactly according to your strategy guide? Answer: [{}]", total_score_1);
+    println!("Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide? Answer: [{}]", total_score_2);
 }
