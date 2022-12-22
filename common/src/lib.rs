@@ -13,16 +13,16 @@ pub fn read_input_file() -> String {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Puzzle<'a> {
-    question: &'a str,
-    answer: u32,
+pub struct Puzzle {
+    question: String,
+    answer: String,
 }
 
-pub fn get_puzzle_part(question: &str, answer: u32) -> Puzzle {
+pub fn get_puzzle_part(question: String, answer: String) -> Puzzle {
     Puzzle { question, answer }
 }
 
-pub fn print_puzzle(puzzle_name: &str, puzzle: [Puzzle; 2]) {
+pub fn print_puzzle(puzzle_name: String, puzzle: [Puzzle; 2]) {
     let tab = " ".repeat(4);
     let part = ["One", "Two"];
 
@@ -46,10 +46,10 @@ mod tests {
     #[test]
     fn nominal_get_puzzle_part() {
         let puzzle = Puzzle {
-            question: "test",
-            answer: 10,
+            question: "test".to_string(),
+            answer: 10.to_string(),
         };
-        let result = get_puzzle_part("test", 10);
+        let result = get_puzzle_part("test".to_string(), 10.to_string());
         assert_eq!(result, puzzle);
     }
 }

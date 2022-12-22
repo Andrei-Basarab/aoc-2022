@@ -353,21 +353,21 @@ pub mod puzzle {
         }
     }
 
-    pub fn solve_part_one(file_content: &String) -> u32 {
+    pub fn solve_part_one(file_content: &String) -> String {
         let motion_series = parse_input_file(&file_content);
         let mut area = Area::default();
 
         area = perform_motions(area, &motion_series, 2);
 
-        count_visited_cells(&area)
+        count_visited_cells(&area).to_string()
     }
 
-    pub fn solve_part_two(file_content: &String) -> u32 {
+    pub fn solve_part_two(file_content: &String) -> String {
         let motion_series = parse_input_file(&file_content);
         let mut area = Area::default();
 
         area = perform_motions(area, &motion_series, 10);
 
-        count_visited_cells(&area)
+        count_visited_cells(&area).to_string()
     }
 }
