@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Rust",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/${input:project}/target/debug/${input:project}.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "integratedTerminal",
+        }
+    ],
+    "inputs": [
+        {
+            "id": "project",
+            "type": "pickString",
+            "options": [
+                "day-1",
+                "day-2",
+                "day-3",
+                "day-4",
+                "day-5",
+                "day-6",
+                "day-7",
+                "day-8",
+                "day-9",
+                "day-10",
+                "day-11",
+                "day-12",
+            ],
+            "description": "Select project for debugging",
+        }
+    ]
+}
